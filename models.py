@@ -12,9 +12,8 @@ def get_recommendations(target_item_id, transactions, items, top_n=6):
     t_cat_l3 = target_row.get("category_l3") or ""
     t_size = str(target_row.get("size") or "").strip().upper()
 
-    # ---------------------------------------------------------
     # TIÊU CHÍ 1: Similar category (Cùng L3 hoặc L2)
-    # ---------------------------------------------------------
+
     similar_pool = items.filter(pl.col("item_id") != target_item_id)
     if t_cat_l3:
         similar_pool = similar_pool.filter(
@@ -25,9 +24,8 @@ def get_recommendations(target_item_id, transactions, items, top_n=6):
     if similar_pool.height == 0:
         return []
 
-    # ---------------------------------------------------------
     # TIÊU CHÍ 2: Co-buy (Số lần mua chung)
-    # ---------------------------------------------------------
+
     if transactions.height > 0:
         customers_who_bought = transactions.filter(
             pl.col("item_id") == target_item_id).select("customer_id").unique()
@@ -47,9 +45,9 @@ def get_recommendations(target_item_id, transactions, items, top_n=6):
         similar_pool = similar_pool.with_columns(
             pl.lit(0).alias("so_lan_mua_cung"))
 
-    # ---------------------------------------------------------
+
     # TIÊU CHÍ 3: Điểm ưu tiên Size (Chỉ áp dụng cho Tã)
-    # ---------------------------------------------------------
+
     similar_pool = similar_pool.with_columns(pl.lit(1.0).alias("score_upsale"))
 
     if "TÃ" in t_cat_l1.upper() and t_size:
@@ -65,7 +63,7 @@ def get_recommendations(target_item_id, transactions, items, top_n=6):
                     return 1.0
                 i_idx = size_order.index(i_size)
 
-                # --- THAY ĐỔI THEO ĐÚNG YÊU CẦU CỦA BẠN ---
+                
                 if i_idx == t_idx:
                     return 2.0           # Cùng size: ĐIỂM CAO NHẤT
                 elif i_idx == t_idx + 1:
