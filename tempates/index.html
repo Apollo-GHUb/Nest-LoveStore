@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Nest & Love - Thiên Đường Cho Mẹ và Bé</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f6f8;
+            font-family: 'Nunito', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="bg-white shadow-sm p-4 flex justify-between items-center sticky top-0 z-50">
+        <a href="/" class="flex items-center space-x-2 text-[#ff6b6b] font-black text-3xl tracking-tight">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="w-10 h-10">
+                <path fill="#ff6b6b"
+                    d="M32 10c-3.3 0-6 2.7-6 6s2.7 6 6 6 6-2.7 6-6-2.7-6-6-6zm16 26c-3.1 0-6.1.9-8.6 2.6-2.2-1.6-4.9-2.6-7.4-2.6s-5.2 1-7.4 2.6C22.1 36.9 19.1 36 16 36c-7.7 0-14 6.3-14 14 0 2.2.5 4.3 1.5 6h57c1-1.7 1.5-3.8 1.5-6 0-7.7-6.3-14-14-14zm-16 8c2.8 0 5.1 2.2 5.1 5H26.9c0-2.8 2.3-5 5.1-5z" />
+                <path fill="#4dadf7" d="M32 18c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4-1.8 4-4 4z" />
+            </svg>
+            <span class="hidden md:inline">Nest & Love</span>
+        </a>
+        <form action="/" method="GET"
+            class="flex-1 mx-4 md:mx-12 flex relative shadow-sm rounded-full overflow-hidden border border-gray-200 focus-within:border-[#ff6b6b]">
+            <input type="text" name="search" value="{{ search_query or '' }}" placeholder="Ba mẹ tìm mua gì hôm nay?"
+                class="w-full px-6 py-3 outline-none bg-gray-50 focus:bg-white" required>
+            <button type="submit" class="bg-[#ff6b6b] hover:bg-[#ff5252] px-6 md:px-8 py-3 text-white font-bold"><i
+                    class="fa-solid fa-magnifying-glass"></i> <span class="hidden md:inline ml-1">Tìm
+                    kiếm</span></button>
+        </form>
+        <div class="flex items-center space-x-4">
+            <button onclick="showWarning('Tính năng Đăng nhập đang được hệ thống nâng cấp!')"
+                class="text-gray-500 hover:text-[#ff6b6b] font-bold hidden lg:flex items-center">
+                <i class="fa-solid fa-circle-user text-2xl mr-1"></i>
+            </button>
+            <a href="/cart"
+                class="cursor-pointer font-extrabold flex items-center hover:text-[#ff6b6b] relative bg-pink-50 px-4 py-2 rounded-full border border-pink-100">
+                <i class="fa-solid fa-cart-shopping text-2xl mr-2 text-[#ff6b6b]"></i>
+                <span id="cart-badge"
+                    class="absolute -top-1 -right-1 bg-[#4dadf7] text-white text-xs px-2 py-0.5 rounded-full shadow">0</span>
+                <span class="hidden md:inline text-gray-700">Giỏ hàng</span>
+            </a>
+        </div>
+    </header>
+
+    <nav
+        class="bg-white text-gray-700 text-sm font-bold px-6 py-3 flex space-x-8 overflow-x-auto shadow-sm border-b border-gray-100">
+        <a href="/"
+            class="hover:text-[#ff6b6b] transition {% if not current_cat %}text-[#ff6b6b] border-b-2 border-[#ff6b6b]{% endif %}">Trang
+            Chủ</a>
+        {% for cat in categories %}
+        <a href="{{ url_for('home', category=cat) }}"
+            class="hover:text-[#ff6b6b] transition whitespace-nowrap {% if current_cat == cat %}text-[#ff6b6b] border-b-2 border-[#ff6b6b]{% endif %}">{{
+            cat }}</a>
+        {% endfor %}
+    </nav>
+
+    {% if not search_query and not current_cat %}
+    <section
+        class="relative bg-white mx-auto max-w-[1400px] mt-4 rounded-3xl overflow-hidden shadow-sm border border-gray-100 group">
+        <img src="https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&w=1600&q=80"
+            alt="Banner"
+            class="w-full h-[350px] md:h-[450px] object-cover opacity-90 transition duration-700 group-hover:scale-105">
+        <div
+            class="absolute inset-0 bg-gradient-to-r from-pink-500/90 via-pink-400/50 to-transparent flex items-center">
+            <div class="px-8 md:px-16 max-w-2xl text-white">
+                <span
+                    class="bg-white text-[#ff6b6b] text-xs font-black px-3 py-1 rounded-full mb-4 inline-block shadow">Thương
+                    hiệu Mới</span>
+                <h1 class="text-4xl md:text-6xl font-black mb-4 leading-tight drop-shadow-lg">Yêu thương bé <br>từ những
+                    điều nhỏ nhất</h1>
+                <p class="text-lg mb-8 font-medium drop-shadow-md">Khám phá hàng ngàn sản phẩm Tã, Sữa, Đồ chơi chính
+                    hãng.</p>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <main class="max-w-[1400px] mx-auto p-4 mt-8">
+        <div class="flex justify-between items-end mb-6 border-b-2 border-gray-200 pb-3">
+            <h2 class="text-2xl font-black text-gray-800">{% if search_query %}Kết quả: "{{ search_query }}"{% elif
+                current_cat %}Danh mục: {{ current_cat }}{% else %}Sản Phẩm Nổi Bật{% endif %}</h2>
+            <p class="text-gray-500 font-medium">Tìm thấy <b class="text-[#ff6b6b] text-lg">{{ total_items if
+                    total_items else 0 }}</b> sản phẩm</p>
+        </div>
+
+        {% if products %}
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+            {% for item in products %}
+            <div
+                class="bg-white p-4 rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 flex flex-col justify-between group">
+                <a href="/product/{{ item.item_id }}" class="block text-center relative">
+                    {% set icon_class = 'fa-box-open' %}{% set icon_color = 'text-gray-400' %}
+                    {% if item.category_l1 %}
+                    {% set cat_lower = item.category_l1 | lower %}
+                    {% if 'sữa' in cat_lower %}{% set icon_class = 'fa-prescription-bottle' %}{% set icon_color =
+                    'text-[#4dadf7]' %}
+                    {% elif 'tã' in cat_lower or 'bỉm' in cat_lower %}{% set icon_class = 'fa-baby' %}{% set icon_color
+                    = 'text-yellow-500' %}
+                    {% elif 'đồ chơi' in cat_lower %}{% set icon_class = 'fa-puzzle-piece' %}{% set icon_color =
+                    'text-green-400' %}
+                    {% elif 'thời trang' in cat_lower or 'quần áo' in cat_lower %}{% set icon_class = 'fa-shirt' %}{%
+                    set icon_color = 'text-pink-400' %}
+                    {% elif 'vệ sinh' in cat_lower or 'tắm' in cat_lower %}{% set icon_class = 'fa-bath' %}{% set
+                    main_color = 'text-teal-400' %}{% endif %}
+                    {% endif %}
+                    <div
+                        class="h-48 flex items-center justify-center mb-4 rounded-xl overflow-hidden bg-gray-50 group-hover:bg-pink-50 transition border border-gray-100">
+                        <i
+                            class="fa-solid {{ icon_class }} {{ icon_color }} text-6xl group-hover:scale-110 transition duration-500 opacity-80"></i>
+                    </div>
+                    <h3 class="text-sm font-bold text-gray-700 line-clamp-2 group-hover:text-[#ff6b6b] h-10 transition">
+                        {% if item.brand %}[{{ item.brand }}] {% endif %}{{ item.category_l3 }}</h3>
+                    <p class="text-xl font-black text-[#ff6b6b] mt-3">{% if item.price %}₫ {{
+                        "{:,.0f}".format(item.price) }}{% else %}Liên hệ{% endif %}</p>
+                </a>
+                <button
+                    onclick="addToCart('{{ item.item_id }}', '{{ item.category_l3[:30] | replace("'", "") | replace('"', '') }}', {{ item.price or 0 }})"
+                    class="w-full mt-4 bg-white border-2 border-[#ff6b6b] text-[#ff6b6b] hover:bg-[#ff6b6b] hover:text-white text-sm font-black py-2.5 rounded-xl transition-all shadow-sm">
+                    CHỌN MUA
+                </button>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if total_pages > 1 %}
+        <div class="flex justify-center items-center space-x-2 mt-12 mb-6">
+            {% if page > 1 %}<a href="{{ url_for('home', page=page-1, category=current_cat, search=search_query) }}"
+                class="w-10 h-10 flex items-center justify-center bg-white border border-gray-200 rounded-full hover:border-[#ff6b6b] hover:text-[#ff6b6b] font-bold shadow-sm"><i
+                    class="fa-solid fa-angle-left"></i></a>{% endif %}
+            <span class="px-4 py-2 bg-[#ff6b6b] text-white font-black rounded-full shadow-md">Trang {{ page }} / {{
+                total_pages }}</span>
+            {% if page < total_pages %}<a
+                href="{{ url_for('home', page=page+1, category=current_cat, search=search_query) }}"
+                class="w-10 h-10 flex items-center justify-center bg-white border border-gray-200 rounded-full hover:border-[#ff6b6b] hover:text-[#ff6b6b] font-bold shadow-sm">
+                <i class="fa-solid fa-angle-right"></i></a>{% endif %}
+        </div>
+        {% endif %}
+        {% else %}
+        <div class="text-center py-20 bg-white rounded-3xl shadow-sm border border-gray-100">
+            <i class="fa-solid fa-box-open text-6xl text-gray-300 mb-4"></i>
+            <h3 class="text-2xl text-gray-800 font-black mb-2">Chưa tìm thấy sản phẩm</h3>
+            <a href="/"
+                class="inline-block bg-[#ff6b6b] text-white font-bold py-3 px-10 rounded-full shadow-lg mt-4">Trở Về
+                Trang Chủ</a>
+        </div>
+        {% endif %}
+    </main>
+
+    <div id="toast"
+        class="fixed top-20 right-8 bg-[#51cf66] text-white px-6 py-4 rounded-xl shadow-2xl transform translate-x-[150%] opacity-0 transition-all duration-300 z-50 flex items-center font-bold">
+        <i class="fa-solid fa-circle-check text-2xl mr-3"></i><span id="toast-msg">Thêm thành công!</span>
+    </div>
+    <div id="toast-warning"
+        class="fixed top-20 right-8 bg-[#ffb020] text-white px-6 py-4 rounded-xl shadow-2xl transform translate-x-[150%] opacity-0 transition-all duration-300 z-50 flex items-center font-bold">
+        <i class="fa-solid fa-triangle-exclamation text-2xl mr-3"></i><span id="toast-warning-msg">Tính năng sắp ra
+            mắt!</span>
+    </div>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('myCart')) || [];
+        document.getElementById('cart-badge').innerText = cart.reduce((sum, item) => sum + item.qty, 0);
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg || 'Thêm thành công!';
+            toast.classList.remove('translate-x-[150%]', 'opacity-0');
+            setTimeout(() => { toast.classList.add('translate-x-[150%]', 'opacity-0'); }, 2500);
+        }
+        function showWarning(msg) {
+            const toast = document.getElementById('toast-warning');
+            document.getElementById('toast-warning-msg').innerText = msg;
+            toast.classList.remove('translate-x-[150%]', 'opacity-0');
+            setTimeout(() => { toast.classList.add('translate-x-[150%]', 'opacity-0'); }, 3000);
+        }
+        function addToCart(id, name, price) {
+            let item = cart.find(i => i.id === id);
+            if (item) { item.qty++; } else { cart.push({ id, name, price, qty: 1 }); }
+            localStorage.setItem('myCart', JSON.stringify(cart));
+            document.getElementById('cart-badge').innerText = cart.reduce((sum, item) => sum + item.qty, 0);
+            showToast('Đã thêm sản phẩm vào giỏ hàng!');
+        }
+    </script>
+</body>
+
+</html>
