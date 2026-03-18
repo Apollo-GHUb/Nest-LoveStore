@@ -25,16 +25,15 @@ Thuật toán là sự kết hợp giữa **Lọc cộng tác (Collaborative Fil
 ```text
 NestAndLove/
 │
-├── data/                               # Thư mục chứa dữ liệu gốc
-│   ├── items.parquet                   # Dữ liệu sản phẩm (Bảng Items)
-│   └── transactions-2025-12.parquet    # Dữ liệu giao dịch (Bảng Transactions)
+├── data/                               
+│   ├── items.parquet                  
+│   └── transactions-2025-12.parquet    
 │
-├── templates/                          # Chứa các file giao diện HTML (Jinja2)
-│   ├── index.html                      # Trang chủ & Hiển thị sản phẩm
-│   ├── detail.html                     # Trang chi tiết & Gợi ý AI (Recommendation)
-│   └── cart.html                       # Trang Quản lý Giỏ hàng
+├── templates/                        
+│   ├── index.html                    
+│   ├── detail.html                    
+│   └── cart.html                     
 │
-├── app.py                              # Lõi Backend (Server Flask & Routing)
-├── models.py                           # Logic Thuật toán Recommendation Engine
-├── requirements.txt                    # Danh sách thư viện Python cần thiết
-└── README.md                           # Tài liệu mô tả dự án
+├── app.py                             
+├── models.py                                       
+└── README.md                      
