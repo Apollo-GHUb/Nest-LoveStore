@@ -61,7 +61,7 @@ try:
     nav_categories = items_clean.group_by("category_l1").agg(pl.len().alias("count")).filter(
         pl.col("count") > 0).sort("count", descending=True).head(6).get_column("category_l1").to_list()
 except Exception as e:
-    print(f"❌ LỖI TẢI DỮ LIỆU: {e}")
+    print(f"LỖI TẢI DỮ LIỆU: {e}")
     items_df = pl.DataFrame()
     transactions_df = pl.DataFrame()
     items_clean = pl.DataFrame()
